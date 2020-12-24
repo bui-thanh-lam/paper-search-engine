@@ -35,7 +35,7 @@ def normalize(vec):
     return [float(element/sum) for element in vec]
 
 
-def TextRank(vectors, n_epochs=10, d=0.85):
+def text_rank(vectors, n_epochs=10, d=0.85):
     vectors = np.array(vectors)
     n_nodes = vectors.shape[0]
     graph = np.zeros((n_nodes, n_nodes))

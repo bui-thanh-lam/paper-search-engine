@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
+import numpy as np
 from database import repository as repo
-from apis.rankers import TextRank
+from apis.rankers import text_rank, vectorize
 
 papers = []
 
@@ -12,14 +13,23 @@ app = FastAPI()
 def search(keyword):
     global papers
     papers = repo.search(keyword)
-    return repo.search(keyword)
+    return {'results': papers,
+            'n_results': len(papers)}
 
 
 @app.get("/ranking/best-items/")
 def rank_by_quality():
     global papers
-    scores = TextRank(papers)
-    pass
+    docs = [p['title'] + p['abstract'] for p in papers]
+    scores = np.array(text_rank(vectorize(docs)))
+    indexes = (-scores).argsort()
+    sorted_results = []
+    for index in indexes:
+        p = papers[index]
+        p['score'] = scores[index]
+        sorted_results.append(p)
+    return {'results': sorted_results,
+            'n_results': len(sorted_results)}
 
 
 if __name__ == "__main__":
