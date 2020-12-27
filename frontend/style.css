@@ -1,0 +1,25 @@
+.container {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+input {
+    padding: 0.5rem;
+}
+
+.search-button {
+    padding: 0.5rem;
+    background: lightblue;
+    font-weight: bold;
+}
+
+.text-rank-button {
+    padding: 0.5rem;
+    background: lightpink;
+    font-weight: bold;
+}
+
+.results {
+    display: block;
+}
