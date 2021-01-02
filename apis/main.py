@@ -16,7 +16,7 @@ app.add_middleware(
 )
 
 
-@app.get("/search/normal/{query}")
+@app.get("/search/normal/")
 def search(q):
     papers = repo.search(q)
     if len(papers) == 0:
@@ -32,7 +32,7 @@ def search(q):
     }
 
 
-@app.get("/search/text-rank/{query}")
+@app.get("/search/text-rank/")
 def rank_by_quality(q):
     papers = repo.search(q)
     if len(papers) == 0:
