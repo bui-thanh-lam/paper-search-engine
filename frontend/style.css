@@ -1,7 +1,6 @@
 .container {
     align-items: center;
     justify-content: center;
-    display: flex;
 }
 
 input {
@@ -12,14 +11,12 @@ input {
     padding: 0.5rem;
     background: lightblue;
     font-weight: bold;
+    width: 100px;
 }
 
 .text-rank-button {
     padding: 0.5rem;
     background: lightpink;
     font-weight: bold;
-}
-
-.results {
-    display: block;
+    width: 100px;
 }
