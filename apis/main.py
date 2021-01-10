@@ -42,7 +42,7 @@ def rank_by_quality(q):
             'n_results': 0
         }
     docs = [p['title'] + p['abstract'] for p in papers]
-    scores = np.array(text_rank(vectorize(docs)))
+    scores = np.array(text_rank(vectorize(docs), q=q, docs=docs))
     indexes = (-scores).argsort()
     sorted_results = []
     for index in indexes:

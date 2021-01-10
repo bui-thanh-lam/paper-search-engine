@@ -23,6 +23,14 @@ def vectorize(docs):
     return vectors
 
 
+def tf(term, doc):
+    count= 0
+    for word in doc:
+        if term == word:
+            count += 1
+    return float(count + 1e-6/(len(doc) + 1e-6))
+
+
 def cosine_distance(vec1, vec2):
     if len(vec1) != len(vec2):
         return 0
@@ -35,7 +43,7 @@ def normalize(vec):
     return [float(element/sum) for element in vec]
 
 
-def text_rank(vectors, n_epochs=10, d=0.85):
+def text_rank(vectors, n_epochs=10, d=0.85, q=None, docs=None):
     vectors = np.array(vectors)
     n_nodes = vectors.shape[0]
     graph = np.zeros((n_nodes, n_nodes))
@@ -45,7 +53,16 @@ def text_rank(vectors, n_epochs=10, d=0.85):
                 continue
             graph[i][j] = cosine_distance(vectors[i], vectors[j])
             graph[j][i] = cosine_distance(vectors[i], vectors[j])
-    scores = np.full(n_nodes, 1.0/n_nodes)
+    if q and docs:
+        terms = word_tokenize(q)
+        scores = [0] * n_nodes
+        for term in terms:
+            temp_scores = [tf(term, word_tokenize(doc)) for doc in docs]
+            scores = np.add(scores, temp_scores)
+        scores = np.array(scores)
+        scores = normalize(scores)
+    else:
+        scores = np.full(n_nodes, 1.0/n_nodes)
     for _ in range(n_epochs):
         for i in range(n_nodes):
             prev_scores = scores
